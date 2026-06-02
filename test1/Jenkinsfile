@@ -1,1 +1,41 @@
-//test
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Build') {
+            steps {
+                echo 'Building the project...'
+                sh 'echo "Build process started..."'
+                
+                // [과제 4번 힌트] 만약 빌드 실패를 테스트하고 싶다면 아래 주석을 풀고(제거하고) Push 해보세요.
+                // sh 'exit 1' 
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+                sh 'echo "All tests passed!"'
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo '빌드 성공! 결과 파일을 생성합니다.'
+            
+            // [과제 5번] 빌드 성공 시 txt 파일로 저장
+            sh 'echo "Build Successful at $(date)" > build_success_result.txt'
+            
+            // 생성된 txt 파일을 Jenkins 대시보드에서 다운로드할 수 있도록 아카이빙(보관)
+            archiveArtifacts artifacts: 'build_success_result.txt', allowEmptyArchive: true
+        }
+        failure {
+            echo '빌드 실패! Jenkins 로그를 확인하고 원인을 분석하세요.'
+        }
+    }
+}
