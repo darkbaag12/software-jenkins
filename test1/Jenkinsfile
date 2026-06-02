@@ -50,12 +50,8 @@ pipeline {
         success {
             echo '빌드 성공! 결과 파일을 생성합니다.'
             
-            // [과제 5번] 빌드 성공 시 txt 파일로 저장
             sh 'echo "Build Successful at $(date)" > build_success_result.txt'
-            
-            // 생성된 txt 파일을 Jenkins 대시보드에서 다운로드할 수 있도록 아카이빙(보관)
             archiveArtifacts artifacts: 'build_success_result.txt', allowEmptyArchive: true
-            // [과제 5번] 2. 이메일 발송
             mail to: 'darkbaag12@gmail.com',
                  subject: "Jenkins 빌드 성공 알림: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
                  body: "빌드가 성공적으로 완료되었습니다.\n\n프로젝트: ${env.JOB_NAME}\n빌드 번호: ${env.BUILD_NUMBER}\n상세 확인: ${env.BUILD_URL}"
