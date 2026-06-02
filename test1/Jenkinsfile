@@ -12,7 +12,7 @@ pipeline {
                 echo 'Building the project...'
                 sh 'echo "Build process started..."'
                 
-                 sh 'exit 1' 
+                 //sh 'exit 1' 
             }
         }
         stage('Test') {
