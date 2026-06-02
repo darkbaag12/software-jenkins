@@ -12,8 +12,7 @@ pipeline {
                 echo 'Building the project...'
                 sh 'echo "Build process started..."'
                 
-                // [과제 4번 힌트] 만약 빌드 실패를 테스트하고 싶다면 아래 주석을 풀고(제거하고) Push 해보세요.
-                // sh 'exit 1' 
+                 sh 'exit 1' 
             }
         }
         stage('Test') {
