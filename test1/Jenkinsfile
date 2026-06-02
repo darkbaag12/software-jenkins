@@ -7,16 +7,35 @@ pipeline {
                 checkout scm
             }
         }
+        stage('Setup Build Tool') {
+            steps {
+                sh '''
+                if ! command -v mvn &> /dev/null; then
+                    echo "Maven not found! Downloading Maven 3.9.5..."
+                    curl -sL -o apache-maven-3.9.5-bin.tar.gz https://archive.apache.org/dist/maven/maven-3/3.9.5/binaries/apache-maven-3.9.5-bin.tar.gz
+                    tar -xzf apache-maven-3.9.5-bin.tar.gz
+                fi
+                '''
+            }
+        }
         stage('Build') {
             steps {
                 echo 'Building the project...'
-                sh 'mvn clean compile'
+                sh '''
+                export MAVEN_HOME="$(pwd)/apache-maven-3.9.5"
+                export PATH="$MAVEN_HOME/bin:$PATH"
+                mvn clean compile
+                '''
             }
         }
         stage('Test') {
             steps {
                 echo 'Testing...'
-                sh 'mvn test'
+                sh '''
+                export MAVEN_HOME="$(pwd)/apache-maven-3.9.5"
+                export PATH="$MAVEN_HOME/bin:$PATH"
+                mvn test
+                '''
             }
         }
     }
