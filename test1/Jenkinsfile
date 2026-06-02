@@ -10,15 +10,13 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the project...'
-                sh 'echo "Build process started..."'
-                
-                 //sh 'exit 1'  1
+                sh 'mvn clean compile'
             }
         }
         stage('Test') {
             steps {
                 echo 'Testing...'
-                sh 'echo "All tests passed!"'
+                sh 'mvn test'
             }
         }
     }
